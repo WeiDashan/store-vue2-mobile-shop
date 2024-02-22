@@ -2,13 +2,13 @@
     <div class="register_index">
         <div class="register_top">
             <div class="left-arrow" @click="goback">
-                <img src="../../../image/leftarrow.png" />
+                <img src="../../../image/leftarrow.png"  alt=""/>
             </div>
             <div>邮箱快速注册</div>
         </div>
         <div class="login_pic">
             <div class="picimg">
-                <img src="../../../image/defaultUserPic.png" />
+                <img src="../../../image/defaultUserPic.png"  alt=""/>
             </div>
         </div>
         <div class="login_submit">
@@ -39,11 +39,12 @@
 
 <script>
     import {Toast} from "vant";
+    import { AppUserUrl } from "@/plugins/api"
     export default {
         name: "Register",
         data(){
             return{
-                email:'',
+              email:'',
             }
         },
         methods:{
@@ -55,21 +56,14 @@
             onSubmit(){
                 const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
                 if (reg.test(this.email)){
-                    const formData = new FormData()
-                    formData.append("email",this.email);
-                    axios.post(this.common.baseUrl+"/ums-user/registerEmailCode",formData).then(response=>{
-                        // console.log(response)
-                        Toast(response.data.message)
-                        if (response.data.code===200){
-                            this.$router.push({
-                                path:'/registerCode',
-                                query:{
-                                    email: this.email
-                                }
-                            })
-                        }
+                  this.post(this.common.baseUrl+AppUserUrl.getCodeByEmail,{email: this.email},()=>{
+                    this.$router.push({
+                      path:'/registerCode',
+                      query:{
+                        email: this.email
+                      }
                     })
-
+                  })
                 }else{
                     Toast("请输入正确邮箱")
                 }

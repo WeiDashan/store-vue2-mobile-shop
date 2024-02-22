@@ -3,7 +3,7 @@
         <div class="mine_top" @click="toSetting">
             <div class="top_img">
                 <div v-if="!haslogin">
-                    <img src="../../../image/defaultUserPic.png" />
+                    <img src="../../../image/defaultUserPic.png" alt=""/>
                 </div>
 
                 <van-image v-if="haslogin" :src="this.$store.getters.GET_USERINFO.icon"></van-image>
@@ -15,7 +15,7 @@
             <div class="body_top">
                 <div class="top_one">
                     <div class="topimg">
-                        <img src="../../../image/mine/collect.png" />
+                        <img src="../../../image/mine/collect.png" alt=""/>
                     </div>
 <!--                    <div class="topname" @click="toCollect">商品收藏</div>-->
                     <div class="topname">商品收藏</div>
@@ -23,13 +23,13 @@
                 </div>
                 <div class="top_one">
                     <div class="topimg">
-                        <img src="../../../image/mine/store.png" />
+                        <img src="../../../image/mine/store.png" alt=""/>
                     </div>
                     <div class="topname">店铺关注</div>
                 </div>
                 <div class="top_one" @click="toHistory">
                     <div class="topimg">
-                        <img src="../../../image/mine/history.png" />
+                        <img src="../../../image/mine/history.png" alt=""/>
                     </div>
                     <div class="topname">浏览记录</div>
 <!--                    <div v-if="haslogin&&historyNum>0">{{historyNum}}</div>-->
@@ -38,28 +38,28 @@
             <div class="body_body">
                 <div class="body_one">
                     <div class="bodyimg">
-                        <img src="../../../image/mine/waitpay.png" />
+                        <img src="../../../image/mine/waitpay.png" alt=""/>
 <!--                        <div v-if="haslogin" class="biaoji">11</div>-->
                     </div>
                     <div class="bodyname">待付款</div>
                 </div>
                 <div class="body_one">
                     <div class="bodyimg">
-                        <img src="../../../image/mine/waitreceive.png" />
+                        <img src="../../../image/mine/waitreceive.png" alt=""/>
 <!--                        <div v-if="haslogin" class="biaoji">11</div>-->
                     </div>
                     <div class="bodyname">待收货</div>
                 </div>
                 <div class="body_one">
                     <div class="bodyimg">
-                        <img src="../../../image/mine/waitcomment.png" />
+                        <img src="../../../image/mine/waitcomment.png" alt=""/>
 <!--                        <div v-if="haslogin" class="biaoji">11</div>-->
                     </div>
                     <div class="bodyname">待评价</div>
                 </div>
                 <div class="body_one">
                     <div class="bodyimg">
-                        <img src="../../../image/mine/afterpay.png" />
+                        <img src="../../../image/mine/afterpay.png" alt=""/>
 <!--                        <div v-if="haslogin" class="biaoji">11</div>-->
                     </div>
                     <div class="bodyname">退换/售后</div>
@@ -82,14 +82,14 @@
         },
         methods:{
             toCollect(){
-                this.$router.push({
-                    path:'/collect'
-                })
+                // this.$router.push({
+                //     path:'/collect'
+                // })
             },
             toHistory(){
-                this.$router.push({
-                    path: '/history'
-                })
+                // this.$router.push({
+                //     path: '/history'
+                // })
             },
             toLogin(){
                 this.$router.push({
@@ -97,29 +97,29 @@
                 })
             },
             toSetting(){
-                if (this.haslogin){
-                    this.$router.push({
-                        path:"/setting"
-                    })
-                }
+                // if (this.haslogin){
+                //     this.$router.push({
+                //         path:"/setting"
+                //     })
+                // }
             }
         },
         created() {
             this.$store.commit("SET_ACTIVETABBAR",'mine');
             if (this.$store.getters.GET_USERID>0){
                 this.haslogin=true;
-                axios.get(this.common.baseUrl+'/ums-collection/getNumber?userId='+this.$store.getters.GET_USERID).then(response=>{
-                    console.log(response)
-                    if(response.data.obj!=null){
-                        this.collectionNum = response.data.obj;
-                    }
-                })
-                axios.get(this.common.baseUrl+'/ums-footprint/getNumber?userId='+this.$store.getters.GET_USERID).then(response=>{
-                    console.log(response)
-                    if(response.data.obj!=null){
-                        this.historyNum = response.data.obj;
-                    }
-                })
+                // axios.get(this.common.baseUrl+'/ums-collection/getNumber?userId='+this.$store.getters.GET_USERID).then(response=>{
+                //     console.log(response)
+                //     if(response.data.obj!=null){
+                //         this.collectionNum = response.data.obj;
+                //     }
+                // })
+                // axios.get(this.common.baseUrl+'/ums-footprint/getNumber?userId='+this.$store.getters.GET_USERID).then(response=>{
+                //     console.log(response)
+                //     if(response.data.obj!=null){
+                //         this.historyNum = response.data.obj;
+                //     }
+                // })
 
             }else {
                 this.haslogin=false;

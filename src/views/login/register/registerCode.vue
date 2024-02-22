@@ -3,13 +3,13 @@
         <div class="inputCode_top">
             <div>新用户注册</div>
             <div class="left-arrow" @click="goback">
-                <img src="../../../image/leftarrow.png" />
+                <img src="../../../image/leftarrow.png"  alt=""/>
             </div>
         </div>
         <div class="inputCode_body">
             <div class="body_top">
                 <div class="userimg">
-                    <img src="../../../image/defaultUserPic.png"></img>
+                    <img src="../../../image/defaultUserPic.png" alt="">
                 </div>
                 <div class="top_code">请输入验证码</div>
                 <div class="top_info">
@@ -39,7 +39,7 @@
 
 <script>
     import { Toast } from 'vant';
-
+    import { AppUserUrl } from "@/plugins/api"
     export default {
         name: "RegisterCode",
         data(){
@@ -57,7 +57,6 @@
                 })
             }else {
                 this.email = this.$route.query.email;
-                console.log(this.email)
             }
         },
         methods:{
@@ -76,12 +75,9 @@
                         path:'/register'
                     })
                 }else{
-                    const formData = new FormData()
-                    formData.append("email",this.email);
-                    Toast('验证码正在发送');
-                    axios.post(this.common.baseUrl+"/ums-user/registerEmailCode",formData).then(response=>{
-                        Toast(response.data.message);
-                    })
+                  this.value = ""
+                  this.post(this.common.baseUrl+AppUserUrl.getCodeByEmail,{email: this.email},()=>{
+                  })
                 }
 
             }
@@ -95,24 +91,17 @@
                     })
                 }else{
                     if (value.length === 6) {
-                        const formData = new FormData();
-                        formData.append("email",this.email);
-                        formData.append("code",this.value);
-                        axios.post(this.common.baseUrl+"/ums-user/emailCode",formData).then(response=>{
-                            console.log(response)
-                            if(response.data.code===500){
-                                Toast(response.data.message);
-                                this.value='';
-                            }else{
-                                Toast(response.data.message);
-                                this.$router.push({
-                                    path:'/registerDetail',
-                                    query:{
-                                        email: this.email
-                                    }
-                                })
-                            }
+                      this.post(this.common.baseUrl+AppUserUrl.checkCodeByEmail,{
+                        email: this.email,
+                        code: this.value
+                      },()=>{
+                        this.$router.push({
+                          path:'/registerDetail',
+                          query:{
+                            email: this.email
+                          }
                         })
+                      })
                     }
                 }
             },

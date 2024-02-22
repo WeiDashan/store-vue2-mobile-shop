@@ -3,13 +3,13 @@
         <div class="inputCode_top">
             <div>邮箱快捷登录</div>
             <div class="left-arrow" @click="goback">
-                <img src="../../../image/leftarrow.png" />
+                <img src="../../../image/leftarrow.png" alt=""/>
             </div>
         </div>
         <div class="inputCode_body">
             <div class="body_top">
                 <div class="userimg">
-                    <img src="../../../image/defaultUserPic.png"></img>
+                    <img src="../../../image/defaultUserPic.png" alt="">
                 </div>
                 <div class="top_code">请输入验证码</div>
                 <div class="top_info">
@@ -39,6 +39,7 @@
 
 <script>
     import { Toast } from 'vant';
+    import { AppUserUrl } from "@/plugins/api"
     export default {
         name: "InputCode",
         data(){
@@ -74,11 +75,9 @@
                         path:'/login'
                     })
                 }else {
-                    const formData = new FormData()
-                    formData.append("email",this.email);
-                    axios.post(this.common.baseUrl+"/ums-user/loginByEmail",formData).then(response=>{
-                        Toast(response.data.message);
-                    })
+                  this.value = ""
+                  this.post(this.common.baseUrl+AppUserUrl.getCodeByEmailToLogin,{email: this.email},()=>{
+                  })
                 }
             }
         },
@@ -91,34 +90,17 @@
                             path:'/login'
                         })
                     }else{
-                        const formData = new FormData();
-                        formData.append("email",this.email);
-                        formData.append("code",this.value);
-                        axios.post(this.common.baseUrl+"/ums-user/loginByCode",formData).then(response=>{
-                            if(response.data.code===500){
-                                Toast(response.data.message);
-                                this.value='';
-                            }else{
-                                Toast(response.data.message);
-                                this.$store.commit("SET_USERID",response.data.obj.id);
-                                this.$store.commit("SET_TOKEN",response.data.obj.token);
-                                axios.get(this.common.baseUrl+"/ums-user/getone?id="+response.data.obj.id).then(response2=>{
-                                    response2 = response2.data.obj;
-                                    response2.icon = this.$store.getters.GET_IMGSRC+response2.icon;
-                                    this.$store.commit("SET_USERINFO",response2);
-                                    this.$router.push({
-                                        path:'/mine'
-                                    })
-                                })
-                                axios.get(this.common.baseUrl+"/ums-address/default?userId="+this.$store.getters.GET_USERID).then(response3=>{
-                                    // console.log(response3)
-                                    let defaultAddress = {};
-                                    defaultAddress.addressDetail = response3.data.obj.addressDetail;
-                                    defaultAddress.addressCity = response3.data.obj.province+response3.data.obj.city+response3.data.obj.county;
-                                    this.$store.commit("SET_DEFAULTADDRESS",defaultAddress);
-                                })
-                            }
-                        })
+                      this.post(this.common.baseUrl+AppUserUrl.loginByCode,{
+                        email: this.email,
+                        code: this.value
+                      },response=>{
+                        response.icon = this.$store.getters.GET_IMGSRC+response.icon;
+                        this.$store.commit("SET_USERID",response.id);
+                        this.$store.commit("SET_USERINFO",response);
+                        this.$router.push({
+                          path:'/mine'
+                        });
+                      })
                     }
                 }
             },

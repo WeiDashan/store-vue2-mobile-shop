@@ -2,7 +2,7 @@
     <div class="registerDetail">
         <div class="register_top">
             <div class="left-arrow" @click="quitregister">
-                <img src="../../../image/leftarrow.png" />
+                <img src="../../../image/leftarrow.png" alt=""/>
             </div>
             <div>注册信息填写</div>
         </div>
@@ -13,21 +13,14 @@
                     <van-uploader :after-read="afterRead" v-model="fileList" :max-count="1"/>
                 </div>
                 <van-field
-                        v-model="umsUser.loginName"
-                        name="loginName"
-                        label="用户名"
-                        placeholder="用户名"
-                        :rules="[{ required: true, message: '请填写用户名' }]"
-                />
-                <van-field
-                        v-model="umsUser.nickyName"
+                        v-model="appUser.nickyName"
                         name="nickyName"
                         label="昵称"
                         placeholder="昵称"
                         :rules="[{ required: true, message: '请填写昵称' }]"
                 />
                 <van-field
-                        v-model="umsUser.rawPassword"
+                        v-model="appUser.rawPassword"
                         type="password"
                         name="rawPassword"
                         label="密码"
@@ -35,15 +28,15 @@
                         :rules="[{ required: true, message: '请填写密码' }]"
                 />
                 <van-field
-                        v-model="confirmpassword"
+                        v-model="confirmPassword"
                         type="password"
-                        name="confirmpassword"
+                        name="confirmPassword"
                         label="确认密码"
                         placeholder="确认密码"
                         :rules="[{ required: true, message: '请填写密码' }]"
                 />
                 <van-field
-                        v-model="umsUser.phone"
+                        v-model="appUser.phone"
                         name="phone"
                         label="手机号"
                         placeholder="手机号"
@@ -61,6 +54,7 @@
 <script>
     import { Dialog } from 'vant';
     import { Toast } from 'vant';
+    import { AppUserUrl } from "@/plugins/api"
     export default {
         name: "RegisterDetail",
         components: {
@@ -71,60 +65,49 @@
                 fileList: [
 
                 ],
-                umsUser:{
-                    loginName: '',
+                appUser:{
+                    nickyName: '',
                     rawPassword: '',
-                    nickyName:'',
                     phone:'',
                     email:'',
+                    iconFile: []
                 },
-                confirmpassword:'',
-                phonepattern: /^1([38][0-9]|4[5-9]|5[0-3,5-9]|66|7[0-8]|9[89])[0-9]{8}$/,
-                loginNamePattern: /^[a-zA-Z0-9]{4,20}$/,
+                confirmPassword:'',
+                phonePattern: /^1([38][0-9]|4[5-9]|5[0-3,5-9]|66|7[0-8]|9[89])[0-9]{8}$/,
             };
         },
         methods: {
             testForm(){
-                if (this.umsUser.rawPassword===this.confirmpassword){
-                    const loginNameRe = new RegExp(this.loginNamePattern);
-                    if (loginNameRe.test(this.umsUser.loginName)){
-                        const phoneRe = new RegExp(this.phonepattern);
-                        if(phoneRe.test(this.umsUser.phone)){
-                            return true;
-                        }else{
-                            Toast('请输入正确的手机号');
-                            return false;
-                        }
+                if (this.appUser.rawPassword===this.confirmPassword){
+                    const phoneRe = new RegExp(this.phonePattern);
+                    if(phoneRe.test(this.appUser.phone)){
+                      return true;
                     }else{
-                        Toast('用户名只能为4至20位的数字或大小写字母');
-                        return false;
+                      Toast('请输入正确的手机号');
+                      return false;
                     }
                 }else {
                     Toast('密码和确认密码不匹配');
                     return false;
                 }
             },
-            onSubmit(values) {
+            onSubmit() {
                 if (this.testForm()){
-                    // console.log(this.fileList[0])
-                    // console.log(this.umsUser);
-                    const formData = new FormData();
-                    for (let key in this.umsUser){
-                        formData.append(key,this.umsUser[key]);
-                    }
-                    formData.append("file",this.fileList[0].file);
-                    axios.post(this.common.baseUrl+"/ums-user/add",formData).then(response=>{
-                        // console.log(response);
-                        Toast(response.data.message)
-                        if(response.data.code === 200){
-                            this.$router.push({
-                                path:'/login'
-                            })
+                    this.appUser.iconFile = this.fileList[0].file
+                    this.post(this.common.baseUrl+AppUserUrl.registerAppUser, this.appUser, ()=>{
+                        this.fileList=[]
+                        this.appUser={
+                            nickyName: '',
+                            rawPassword: '',
+                            phone:'',
+                            email:'',
+                            iconFile: []
                         }
+                        this.$router.push({
+                          path:'/login'
+                        })
                     })
                 }
-                // console.log(this.fileList[0].file)
-                // console.log(typeof this.fileList[0].file)
             },
             afterRead(file) {
                 // 此时可以自行将文件上传至服务器
@@ -146,13 +129,13 @@
             }
         },
         created() {
-            if (this.$route.query===""){
+            if (this.$route.query === null || this.$route.query ===""){
                 Toast("未获取到邮箱，请重新输入")
                 this.$router.push({
                     path:"/login"
                 })
             }else{
-                this.umsUser.email = this.$route.query.email;
+                this.appUser.email = this.$route.query.email;
             }
 
         }

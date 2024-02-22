@@ -14,10 +14,8 @@ export default new Vuex.Store({
     imgsrc: "http://49.233.51.52:9000/images/",
     userId: 0,
     userinfo: {
-      active: 1,
       email: "zhhzh0629@icloud.com",
       icon: "http://49.233.51.52:9000/images/20231026212808719066296.jpg",
-      loginName: "ceshiquanxian",
       nickyName: "ceshiquanxian",
       phone: "13373367378",
     },
