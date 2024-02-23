@@ -30,27 +30,30 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment}}
+                                            {{ordersitem.payment/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
-                                    <div class="productStatus">
-<!--                                        //status 1待付款 2待收货 3已完成 4已取消&ndash;&gt;-->
-                                        <span v-if="ordersitem.status===1">待付款</span>
-                                        <span v-if="ordersitem.status===2">待收货</span>
-                                        <span v-if="ordersitem.status===3">已完成</span>
-                                        <span v-if="ordersitem.status===4">已取消</span>
-                                    </div>
+                                  <div class="productStatus">
+                                    <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                    <span v-if="ordersitem.status===0">未付款</span>
+                                    <span v-if="ordersitem.status===1">待发货</span>
+                                    <span v-if="ordersitem.status===2">待收货</span>
+                                    <span v-if="ordersitem.status===3">待评价</span>
+                                    <span v-if="ordersitem.status===4">交易成功</span>
+                                    <span v-if="ordersitem.status===5">已取消</span>
+                                    <span v-if="ordersitem.status===6">退款中</span>
+                                  </div>
                                 </div>
-                                <div class="oneitem_bottom">
-<!--                                    //status 1待付款 2待收货 3已完成 4已取消-->
-                                    <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
-                                    <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
-                                    <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
-                                    <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
-                                </div>
+                              <div class="oneitem_bottom">
+                                <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
+                                <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
+                                <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
+                                <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
+                                <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
+                                <div  v-if="ordersitem.status===0" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
+                              </div>
                             </div>
                             <div class="cartEmpty" v-if="orders.length===0">
                                 <div class="cartEmpty_login" v-if="!haslogin">
@@ -80,27 +83,30 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment}}
+                                            {{ordersitem.payment/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
-                                    <div class="productStatus">
-                                        <!--                                        //status 1待付款 2待收货 3已完成 4已取消&ndash;&gt;-->
-                                        <span v-if="ordersitem.status===1">待付款</span>
-                                        <span v-if="ordersitem.status===2">待收货</span>
-                                        <span v-if="ordersitem.status===3">已完成</span>
-                                        <span v-if="ordersitem.status===4">已取消</span>
-                                    </div>
+                                  <div class="productStatus">
+                                    <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                    <span v-if="ordersitem.status===0">未付款</span>
+                                    <span v-if="ordersitem.status===1">待发货</span>
+                                    <span v-if="ordersitem.status===2">待收货</span>
+                                    <span v-if="ordersitem.status===3">待评价</span>
+                                    <span v-if="ordersitem.status===4">交易成功</span>
+                                    <span v-if="ordersitem.status===5">已取消</span>
+                                    <span v-if="ordersitem.status===6">退款中</span>
+                                  </div>
                                 </div>
-                                <div class="oneitem_bottom">
-                                    <!--                                    //status 1待付款 2待收货 3已完成 4已取消-->
-                                    <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
-                                    <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
-                                    <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
-                                    <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
-                                </div>
+                              <div class="oneitem_bottom">
+                                <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
+                                <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
+                                <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
+                                <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
+                                <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
+                                <div  v-if="ordersitem.status===0" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
+                              </div>
                             </div>
                             <div class="cartEmpty" v-if="orders.length===0">
                                 <div class="cartEmpty_login" v-if="!haslogin">
@@ -130,27 +136,30 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment}}
+                                            {{ordersitem.payment/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
-                                    <div class="productStatus">
-                                        <!--                                        //status 1待付款 2待收货 3已完成 4已取消&ndash;&gt;-->
-                                        <span v-if="ordersitem.status===1">待付款</span>
-                                        <span v-if="ordersitem.status===2">待收货</span>
-                                        <span v-if="ordersitem.status===3">已完成</span>
-                                        <span v-if="ordersitem.status===4">已取消</span>
-                                    </div>
+                                  <div class="productStatus">
+                                    <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                    <span v-if="ordersitem.status===0">未付款</span>
+                                    <span v-if="ordersitem.status===1">待发货</span>
+                                    <span v-if="ordersitem.status===2">待收货</span>
+                                    <span v-if="ordersitem.status===3">待评价</span>
+                                    <span v-if="ordersitem.status===4">交易成功</span>
+                                    <span v-if="ordersitem.status===5">已取消</span>
+                                    <span v-if="ordersitem.status===6">退款中</span>
+                                  </div>
                                 </div>
-                                <div class="oneitem_bottom">
-                                    <!--                                    //status 1待付款 2待收货 3已完成 4已取消-->
-                                    <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
-                                    <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
-                                    <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
-                                    <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
-                                </div>
+                              <div class="oneitem_bottom">
+                                <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
+                                <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
+                                <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
+                                <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
+                                <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
+                                <div  v-if="ordersitem.status===0" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
+                              </div>
                             </div>
                             <div class="cartEmpty" v-if="orders.length===0">
                                 <div class="cartEmpty_login" v-if="!haslogin">
@@ -180,27 +189,30 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment}}
+                                            {{ordersitem.payment/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
-                                    <div class="productStatus">
-                                        <!--                                        //status 1待付款 2待收货 3已完成 4已取消&ndash;&gt;-->
-                                        <span v-if="ordersitem.status===1">待付款</span>
-                                        <span v-if="ordersitem.status===2">待收货</span>
-                                        <span v-if="ordersitem.status===3">已完成</span>
-                                        <span v-if="ordersitem.status===4">已取消</span>
-                                    </div>
+                                  <div class="productStatus">
+                                    <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                    <span v-if="ordersitem.status===0">未付款</span>
+                                    <span v-if="ordersitem.status===1">待发货</span>
+                                    <span v-if="ordersitem.status===2">待收货</span>
+                                    <span v-if="ordersitem.status===3">待评价</span>
+                                    <span v-if="ordersitem.status===4">交易成功</span>
+                                    <span v-if="ordersitem.status===5">已取消</span>
+                                    <span v-if="ordersitem.status===6">退款中</span>
+                                  </div>
                                 </div>
-                                <div class="oneitem_bottom">
-                                    <!--                                    //status 1待付款 2待收货 3已完成 4已取消-->
-                                    <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
-                                    <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
-                                    <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
-                                    <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
-                                </div>
+                              <div class="oneitem_bottom">
+                                <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
+                                <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
+                                <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
+                                <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
+                                <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
+                                <div  v-if="ordersitem.status===0" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
+                              </div>
                             </div>
                             <div class="cartEmpty" v-if="orders.length===0">
                                 <div class="cartEmpty_login" v-if="!haslogin">
@@ -230,26 +242,29 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment}}
+                                            {{ordersitem.payment/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
                                     <div class="productStatus">
-                                        <!--                                        //status 1待付款 2待收货 3已完成 4已取消&ndash;&gt;-->
-                                        <span v-if="ordersitem.status===1">待付款</span>
+                                        <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
+                                        <span v-if="ordersitem.status===0">未付款</span>
+                                        <span v-if="ordersitem.status===1">待发货</span>
                                         <span v-if="ordersitem.status===2">待收货</span>
-                                        <span v-if="ordersitem.status===3">已完成</span>
-                                        <span v-if="ordersitem.status===4">已取消</span>
+                                        <span v-if="ordersitem.status===3">待评价</span>
+                                        <span v-if="ordersitem.status===4">交易成功</span>
+                                      <span v-if="ordersitem.status===5">已取消</span>
+                                      <span v-if="ordersitem.status===6">退款中</span>
                                     </div>
                                 </div>
                                 <div class="oneitem_bottom">
-                                    <!--                                    //status 1待付款 2待收货 3已完成 4已取消-->
+                                    <!-- 0未付款，1待发货，2待收货，3待评价，4交易成功，5已取消，6退款中;-->
                                     <div  v-if="ordersitem.status===3" class="bottom_btn">评价晒单</div>
                                     <div  v-if="ordersitem.status===3" class="bottom_btn">退换/售后</div>
                                     <div  class="bottom_btn_pay" @click="buyAgain(ordersitem)">再次购买</div>
                                     <div  v-if="ordersitem.status===2" class="bottom_btn">申请退款</div>
                                     <div  v-if="ordersitem.status===1" class="bottom_btn">取消订单</div>
-                                    <div  v-if="ordersitem.status===1" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
+                                    <div  v-if="ordersitem.status===0" class="bottom_btn_pay" @click="toPay(ordersitem)">去支付</div>
                                 </div>
                             </div>
                             <div class="cartEmpty" v-if="orders.length===0">
@@ -277,6 +292,8 @@
 
 <script>
     import MescrollVue from 'mescroll.js/mescroll.vue'
+    import {AppOrderUrl} from "@/plugins/api"
+    import {Toast} from "vant";
     export default {
         name: "Orders",
         components: {
@@ -358,18 +375,19 @@
             toPay(item){
                 let arr=[];
                 arr.push(item.id);
-                console.log(1)
-                console.log(item)
-                console.log(11)
+                // console.log(1)
+                // console.log(item)
+                // console.log(11)
                 let pay = {
                     "price":item.payment,
                     "orderIds":arr,
                     "orderInfo":item.name
                 }
-                this.$store.commit("SET_PAY",pay);
-                this.$router.push({
-                    path:'/pay',
-                })
+                Toast("支付")
+                // this.$store.commit("SET_PAY",pay);
+                // this.$router.push({
+                //     path:'/pay',
+                // })
             },
             toLogin(){
                 this.$router.push({
@@ -388,66 +406,36 @@
             mescrollInit(mescroll) {
                 this.mescroll = mescroll;
             },
-            getOrders(response){
-                console.log(response);
-                //当加载到最大时，将属性this.orderNoMore=true;
-                if (response.data.obj.items===[]){
-                }else{
-                    if(response.data.obj.order.records.length<this.currentSize){
-                        this.orderNoMore = true;
-                    }
-                    for (let i=0;i<response.data.obj.order.records.length;i++){
-                        let oneitem={
-                            id: 1,
-                            productId: 10,
-                            img: 'http://139.196.126.28:9000/images/20210709160225162124248.webp',
-                            name: '短袖T恤男衬衣',
-                            payment: 9.9,
-                            num: 1,
-                            status: 1,
-                        };
-                        oneitem.id = response.data.obj.order.records[i].orderId;
-                        oneitem.productId = response.data.obj.products[i].id;
-                        oneitem.img = this.$store.getters.GET_IMGSRC + response.data.obj.products[i].img;
-                        oneitem.name = response.data.obj.products[i].name;
-                        oneitem.payment = response.data.obj.order.records[i].payment;
-                        oneitem.num = response.data.obj.items[i].num;
-                        oneitem.status = response.data.obj.order.records[i].status;
-                        this.orders.push(oneitem);
-                    }
-                    this.myupdating=false;
-                }
-            },
-            getList(){
-                axios.get(this.common.baseUrl+"/tb-order/list?pageNo="+this.currentPage+"&pageSize="+this.currentSize+"&userId="+this.userId)
-                    .then((response)=>{
-                        this.getOrders(response)
-                    })
-            },
-            getPaidOrder(){
-                axios.get(this.common.baseUrl+"/tb-order/getPaidOrder?pageNo="+this.currentPage+"&pageSize="+this.currentSize+"&userId="+this.userId)
-                    .then((response)=>{
-                        this.getOrders(response)
-                    })
-            },
-            getNoGetOrder(){
-                axios.get(this.common.baseUrl+"/tb-order/getNoGetOrder?pageNo="+this.currentPage+"&pageSize="+this.currentSize+"&userId="+this.userId)
-                    .then((response)=>{
-                        this.getOrders(response)
-                    })
-            },
-            getNoReviewOrder(){
-                axios.get(this.common.baseUrl+"/tb-order/getFinishOrder?pageNo="+this.currentPage+"&pageSize="+this.currentSize+"&userId="+this.userId)
-                    .then((response)=>{
-                        this.getOrders(response)
-                    })
-            },
-            getCloseOrder(){
-                axios.get(this.common.baseUrl+"/tb-order/getCloseOrder?pageNo="+this.currentPage+"&pageSize="+this.currentSize+"&userId="+this.userId)
-                    .then((response)=>{
-                        this.getOrders(response)
-                    })
-            },
+            // getOrders(response){
+            //     console.log(response);
+            //     //当加载到最大时，将属性this.orderNoMore=true;
+            //     if (response.data.obj.items===[]){
+            //     }else{
+            //         if(response.data.obj.order.records.length<this.currentSize){
+            //             this.orderNoMore = true;
+            //         }
+            //         for (let i=0;i<response.data.obj.order.records.length;i++){
+            //             let oneitem={
+            //                 id: 1,
+            //                 productId: 10,
+            //                 img: 'http://139.196.126.28:9000/images/20210709160225162124248.webp',
+            //                 name: '短袖T恤男衬衣',
+            //                 payment: 9.9,
+            //                 num: 1,
+            //                 status: 1,
+            //             };
+            //             oneitem.id = response.data.obj.order.records[i].orderId;
+            //             oneitem.productId = response.data.obj.products[i].id;
+            //             oneitem.img = this.$store.getters.GET_IMGSRC + response.data.obj.products[i].img;
+            //             oneitem.name = response.data.obj.products[i].name;
+            //             oneitem.payment = response.data.obj.order.records[i].payment;
+            //             oneitem.num = response.data.obj.items[i].num;
+            //             oneitem.status = response.data.obj.order.records[i].status;
+            //             this.orders.push(oneitem);
+            //         }
+            //         this.myupdating=false;
+            //     }
+            // },
             tabsChange(){
                 this.myupdating = false;
                 this.currentPage = 1;
@@ -458,16 +446,17 @@
 
                 if (!this.myupdating){
                     this.myupdating = true;
+                  // -1全部, 0未付款，2待收货，4交易成功，5已取消
                     if (this.active===0){
-                        this.getList()
+                        this.getAllOrders()
                     }else if(this.active===1){
-                        this.getPaidOrder()
+                      this.getOrdersByStatus(0)
                     }else if(this.active===2){
-                        this.getNoGetOrder()
+                      this.getOrdersByStatus(2)
                     }else if(this.active===3){
-                        this.getNoReviewOrder()
+                      this.getOrdersByStatus(4)
                     }else if(this.active===4){
-                        this.getCloseOrder()
+                      this.getOrdersByStatus(5)
                     }
                 }
 
@@ -487,6 +476,60 @@
             onSearch(){
                 console.log("搜搜")
             },
+          getAllOrders(){
+            this.post(this.common.baseUrl+AppOrderUrl.getAllOrdersByUserId,{userId: this.userId},response=>{
+              let arr = [];
+              for (let i=0;i<response.length;i++){
+                let oneItem={
+                  id: 1,
+                  productId: 10,
+                  img: "http://49.233.51.52:9000/images/20231026212808719066296.jpg",
+                  name: '短袖T恤男衬衣',
+                  payment: 9.9,
+                  num: 1,
+                  status: 1,
+                };
+                oneItem.id = response[i].id;
+                oneItem.productId = response[i].productId;
+                // oneItem.img = this.$store.getters.GET_IMGSRC + response[i].img;
+                // oneItem.name = response[i].name;
+                oneItem.payment = response[i].productPrice;
+                oneItem.num = response[i].productNum;
+                oneItem.status = response[i].orderStatus;
+                arr.push(oneItem);
+              }
+              this.orders = arr;
+              // console.log(response)
+            })
+          },
+          getOrdersByStatus(status){
+            // -1全部, 0未付款，2待收货，4交易成功，5已取消
+            this.post(this.common.baseUrl+AppOrderUrl.getAllOrdersByUserIdAndStatus,
+                {userId: this.userId, orderStatus: status},response=>{
+              let arr = [];
+              for (let i=0;i<response.length;i++){
+                let oneItem={
+                  id: 1,
+                  productId: 10,
+                  img: "http://49.233.51.52:9000/images/20231026212808719066296.jpg",
+                  name: '短袖T恤男衬衣',
+                  payment: 9.9,
+                  num: 1,
+                  status: 1,
+                };
+                oneItem.id = response[i].id;
+                oneItem.productId = response[i].productId;
+                // oneItem.img = this.$store.getters.GET_IMGSRC + response[i].img;
+                // oneItem.name = response[i].name;
+                oneItem.payment = response[i].productPrice;
+                oneItem.num = response[i].productNum;
+                oneItem.status = response[i].orderStatus;
+                arr.push(oneItem);
+              }
+              this.orders = arr;
+              // console.log(response)
+            })
+          },
         },
         created() {
             this.$store.commit("SET_ACTIVETABBAR",'orders');
@@ -495,50 +538,27 @@
             }else{
                 this.haslogin = true;
                 this.myupdating=true;
-                axios.get(this.common.baseUrl+"/tb-order/list?pageNo="+this.currentPage+"&pageSize="+this.currentSize+"&userId="+this.userId).then((response)=>{
-                    console.log(response);
-                    let arr = [];
-                    for (let i=0;i<response.data.obj.order.records.length;i++){
-                        let oneitem={
-                            id: 1,
-                            productId: 10,
-                            img: 'http://139.196.126.28:9000/images/20210709160225162124248.webp',
-                            name: '短袖T恤男衬衣',
-                            payment: 9.9,
-                            num: 1,
-                            status: 1,
-                        };
-                        oneitem.id = response.data.obj.order.records[i].orderId;
-                        oneitem.productId = response.data.obj.products[i].id;
-                        oneitem.img = this.$store.getters.GET_IMGSRC + response.data.obj.products[i].img;
-                        oneitem.name = response.data.obj.products[i].name;
-                        oneitem.payment = response.data.obj.order.records[i].payment;
-                        oneitem.num = response.data.obj.items[i].num;
-                        oneitem.status = response.data.obj.order.records[i].status;
-                        arr.push(oneitem);
-                    }
-                    this.orders = arr;
-                    console.log(this.orders);
-                })
+                this.getAllOrders();
             }
         },
         watch:{
             active(active){
+              // -1全部, 0未付款，2待收货，4交易成功，5已取消
                 if (active===0){
                     this.tabsChange()
-                    this.getList()
+                    this.getAllOrders()
                 }else if(active===1){
                     this.tabsChange()
-                    this.getPaidOrder()
+                    this.getOrdersByStatus(0)
                 }else if(active===2){
                     this.tabsChange()
-                    this.getNoGetOrder()
+                  this.getOrdersByStatus(2)
                 }else if(active===3){
                     this.tabsChange()
-                    this.getNoReviewOrder()
+                  this.getOrdersByStatus(4)
                 }else if(active===4){
                     this.tabsChange()
-                    this.getCloseOrder()
+                  this.getOrdersByStatus(5)
                 }
             }
         }

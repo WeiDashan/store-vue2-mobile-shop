@@ -12,7 +12,7 @@ export default new Vuex.Store({
     token: '',
     menu: [],
     imgsrc: "http://49.233.51.52:9000/images/",
-    userId: 0,
+    userId: 1,
     userinfo: {
       email: "zhhzh0629@icloud.com",
       icon: "http://49.233.51.52:9000/images/20231026212808719066296.jpg",

@@ -1,5 +1,6 @@
 <template>
     <div class="productDetail">
+        <van-loading v-if="orderLoading" color="#0094ff" vertical>正在生成订单，请稍后</van-loading>
         <div class="operator">
             <div class="back" @click="goback">
                 <div>
@@ -90,12 +91,14 @@
 
 <script>
     import {Dialog, Toast} from 'vant';
+    import {AppOrderUrl} from "@/plugins/api"
     export default {
         name: "productDetail",
 
         data(){
             return{
                 productId: 10,
+                orderLoading: false,
                 pics:[
                   "http://49.233.51.52:9000/images/20231106201951638003234.jpg",
                   "http://49.233.51.52:9000/images/20231106201951638003234.jpg",
@@ -347,8 +350,9 @@
                       }
                       this.sku.list.push(obj)
                   }
-                  console.log(this.sku.tree);
-                  console.log(this.sku.list);
+                  console.log(this.stocks)
+                  // console.log(this.sku.tree);
+                  // console.log(this.sku.list);
                 })
             }
         },
@@ -401,79 +405,61 @@
                 this.buyNowBtn=false;
                 this.addCartBtn=true;
             },
-            define(item){
-                this.show = false;
-                let form = {
-                  productId: item.goodsId,
-                  selectedNum: item.selectedNum,
-                  stockId: item.selectedSkuComb.id,
-                  price: item.selectedSkuComb.price,
-                  userId: 1,
+            createOrder(item){
+              let skuDetail=""
+              this.stocks.forEach(stock=>{
+                if (stock.id===item.selectedSkuComb.id){
+                  skuDetail = JSON.stringify(stock.skuList)
                 }
-                // let stock = {};
-                // for (let i=0;i<this.stocks.length;i++){
-                //     if (this.stocks[i].id===stockId){
-                //         stock = this.stocks[i];
-                //         break;
-                //     }
-                // }
-                // console.log(stock)
-                if (this.buyNowBtn){
-                  this.post(this.common.baseUrl+'/app-order/createOrder',form,response=>{
-                    console.log(response)
+              })
+              // console.log("skuDetail: "+skuDetail)
+              this.show = false;
+              let form = {
+                userId: 1,
+                stockId: item.selectedSkuComb.id,
+                productId: item.goodsId,
+                skuDetail: skuDetail,
+                productNum: item.selectedNum,
+                productPrice: item.selectedSkuComb.price,
+              }
+              // console.log("form"+form)
+              if (this.buyNowBtn){
+                this.orderLoading = true
+                this.post(this.common.baseUrl+AppOrderUrl.createOrder,form,()=>{
+                  this.orderLoading = false
+                  this.$router.push({
+                    path:'/orders'
                   })
-                    // Toast("成功下单")
-                    // axios.get(this.common.baseUrl+'/ums-address/default?userId='+this.$store.getters.GET_USERID).then(response=>{
-                    //     this.address = response.data.obj.address;
-                    //     this.name = response.data.obj.name;
-                    //     this.phone = response.data.obj.tel;
-                    //     const formData = new FormData();
-                    //     formData.append("address",this.address);
-                    //     formData.append("name",this.name);
-                    //     formData.append("phone",this.phone);
-                    //     formData.append("userId",this.$store.getters.GET_USERID);
-                    //     formData.append("num",item.selectedNum);
-                    //     formData.append("stockId",stock.id);
-                    //     axios.post(this.common.baseUrl+"/tb-order/productOrder",formData).then(response2=>{
-                    //         if (response2.data.code===200){
-                    //             Toast(response2.data.message);
-                    //             if (response.data.code===200){
-                    //                 Dialog.confirm({
-                    //                     title: '提示',
-                    //                     message: '是否要直接支付',
-                    //                 }).then(() => {
-                    //                         // 跳转至支付界面，但是需要orderId
-                    //                         console.log("立即支付");
-                    //                         console.log(response2);
-                    //                     })
-                    //                     .catch(() => {
-                    //                         //取消支付，就直接返回订单界面
-                    //                         this.$router.push({
-                    //                             path:'/orders'
-                    //                         })
-                    //                     });
-                    //             }
-                    //         }
-                    //     })
-                    // })
-                    //下单需要继续完成支付部分才能成功
-                }else {
-                    // const formData = new FormData();
-                    // formData.append("userId",this.$store.getters.GET_USERID);
-                    // formData.append("quantity",selectedNum);
-                    // formData.append("stockId",stock.id);
-                    // formData.append("productId",productId);
-                    // axios.post(this.common.baseUrl+'/ums-shoppingcart/add',formData).then(response=>{
-                    //     console.log("加入购物车成功");
-                    //     console.log(response);
-                    //     Toast("成功加入购物车");
-                    //     this.$router.push({
-                    //         path:'/cart'
-                    //     })
-                    // })
+                })
+                //下单需要继续完成支付部分才能成功
+              }else {
+                // const formData = new FormData();
+                // formData.append("userId",this.$store.getters.GET_USERID);
+                // formData.append("quantity",selectedNum);
+                // formData.append("stockId",stock.id);
+                // formData.append("productId",productId);
+                // axios.post(this.common.baseUrl+'/ums-shoppingcart/add',formData).then(response=>{
+                //     console.log("加入购物车成功");
+                //     console.log(response);
+                //     Toast("成功加入购物车");
+                //     this.$router.push({
+                //         path:'/cart'
+                //     })
+                // })
+              }
+              // this.buyNowBtn=false;
+              // this.addCartBtn=false;
+            },
+            define(item){
+                // console.log(item)
+                if (this.$store.getters.GET_USERID<0){
+                    this.$router.push({
+                        path:'/login'
+                    })
+                }else{
+                   this.createOrder(item)
                 }
-                // this.buyNowBtn=false;
-                // this.addCartBtn=false;
+
             }
         }
     }

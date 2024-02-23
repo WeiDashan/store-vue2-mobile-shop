@@ -4,7 +4,7 @@
             <div v-for="(item,index) in mydataNewLeft"
                  class="leftone"  @click="toProductDetail(item)">
                 <div class="productimg">
-                    <img :src="item.img"/>
+                    <img :src="item.img" alt=""/>
                 </div>
                 <div class="productname">
                     <span v-if="item.hot_status===1" class="productTag">精品热卖</span>
@@ -17,7 +17,7 @@
             <div v-for="(item,index) in mydataNewRight"
                  class="rightone" @click="toProductDetail(item)">
                 <div class="productimg">
-                    <img :src="item.img"/>
+                    <img :src="item.img" alt=""/>
                 </div>
                 <div class="productname">
                     <span v-if="item.hot_status===1" class="productTag">精品热卖</span>
