@@ -1,5 +1,6 @@
 const appUser = '/app-user';
 const appOrder = '/app-order';
+const appCart = '/app-cart';
 
 export const AppUserUrl= {
     checkCodeByEmail: appUser+"/checkCodeByEmail",
@@ -14,4 +15,9 @@ export const AppOrderUrl= {
     createOrder: appOrder+"/createOrder",
     getAllOrdersByUserId: appOrder+"/getAllOrdersByUserId",
     getAllOrdersByUserIdAndStatus: appOrder+"/getAllOrdersByUserIdAndStatus",
+}
+export const AppCartUrl= {
+    getAllCartByUserId: appCart+"/getAllCartByUserId",
+    addCart: appCart+"/addCart",
+    updateProductNumByCartId: appCart+"/updateProductNumByCartId",
 }

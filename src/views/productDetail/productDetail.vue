@@ -91,7 +91,7 @@
 
 <script>
     import {Dialog, Toast} from 'vant';
-    import {AppOrderUrl} from "@/plugins/api"
+    import {AppOrderUrl, AppCartUrl} from "@/plugins/api"
     export default {
         name: "productDetail",
 
@@ -350,7 +350,7 @@
                       }
                       this.sku.list.push(obj)
                   }
-                  console.log(this.stocks)
+                  // console.log(this.stocks)
                   // console.log(this.sku.tree);
                   // console.log(this.sku.list);
                 })
@@ -421,8 +421,10 @@
                 skuDetail: skuDetail,
                 productNum: item.selectedNum,
                 productPrice: item.selectedSkuComb.price,
+                productIcon: this.product.img,
+                productName: this.product.name
               }
-              // console.log("form"+form)
+              // console.log("form"+form.productIcon+form.productName)
               if (this.buyNowBtn){
                 this.orderLoading = true
                 this.post(this.common.baseUrl+AppOrderUrl.createOrder,form,()=>{
@@ -433,6 +435,11 @@
                 })
                 //下单需要继续完成支付部分才能成功
               }else {
+                this.post(this.common.baseUrl+AppCartUrl.addCart,form,()=>{
+                  this.$router.push({
+                    path:'/cart'
+                  })
+                })
                 // const formData = new FormData();
                 // formData.append("userId",this.$store.getters.GET_USERID);
                 // formData.append("quantity",selectedNum);

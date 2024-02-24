@@ -30,7 +30,7 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment/100}}
+                                            {{ordersitem.payment*ordersitem.num/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
@@ -83,7 +83,7 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment/100}}
+                                            {{ordersitem.payment*ordersitem.num/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
@@ -136,7 +136,7 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment/100}}
+                                            {{ordersitem.payment*ordersitem.num/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
@@ -189,7 +189,7 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment/100}}
+                                            {{ordersitem.payment*ordersitem.num/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
@@ -242,7 +242,7 @@
                                     <div class="productDetail">
                                         <div class="productPrice">
                                             <span>￥</span>
-                                            {{ordersitem.payment/100}}
+                                            {{ordersitem.payment*ordersitem.num/100}}
                                         </div>
                                         <div class="productNum">共{{ordersitem.num}}件</div>
                                     </div>
@@ -316,45 +316,6 @@
                 orders:[
 
                 ],
-                // orders:[
-                //     //status 1待付款 2待收货 3已完成 4已取消
-                //     {
-                //         id: 1,
-                //         productId: 10,
-                //         img: 'http://139.196.126.28:9000/images/20210709160225162124248.webp',
-                //         name: '短袖T恤男衬衣',
-                //         payment: 9.9,
-                //         num: 1,
-                //         status: 1,
-                //     },
-                //     {
-                //         id: 1,
-                //         productId: 10,
-                //         img: 'http://139.196.126.28:9000/images/20210709160225162124248.webp',
-                //         name: '短袖T恤男衬衣',
-                //         payment: 9.9,
-                //         num: 1,
-                //         status: 2,
-                //     },
-                //     {
-                //         id: 1,
-                //         productId: 10,
-                //         img: 'http://139.196.126.28:9000/images/20210709160225162124248.webp',
-                //         name: '短袖T恤男衬衣',
-                //         payment: 9.9,
-                //         num: 1,
-                //         status: 3,
-                //     },
-                //     {
-                //         id: 1,
-                //         productId: 10,
-                //         img: 'http://139.196.126.28:9000/images/20210709160225162124248.webp',
-                //         name: '短袖T恤男衬衣',
-                //         payment: 9.9,
-                //         num: 1,
-                //         status: 4,
-                //     }
-                // ],
                 currentPage:1,
                 currentSize:100,
                 myupdating: false,
@@ -375,9 +336,6 @@
             toPay(item){
                 let arr=[];
                 arr.push(item.id);
-                // console.log(1)
-                // console.log(item)
-                // console.log(11)
                 let pay = {
                     "price":item.payment,
                     "orderIds":arr,
@@ -491,8 +449,8 @@
                 };
                 oneItem.id = response[i].id;
                 oneItem.productId = response[i].productId;
-                // oneItem.img = this.$store.getters.GET_IMGSRC + response[i].img;
-                // oneItem.name = response[i].name;
+                oneItem.img = response[i].productIcon;
+                oneItem.name = response[i].productName;
                 oneItem.payment = response[i].productPrice;
                 oneItem.num = response[i].productNum;
                 oneItem.status = response[i].orderStatus;
@@ -519,8 +477,8 @@
                 };
                 oneItem.id = response[i].id;
                 oneItem.productId = response[i].productId;
-                // oneItem.img = this.$store.getters.GET_IMGSRC + response[i].img;
-                // oneItem.name = response[i].name;
+                oneItem.img = response[i].productIcon;
+                oneItem.name = response[i].productName;
                 oneItem.payment = response[i].productPrice;
                 oneItem.num = response[i].productNum;
                 oneItem.status = response[i].orderStatus;

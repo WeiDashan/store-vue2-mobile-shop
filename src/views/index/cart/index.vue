@@ -23,21 +23,21 @@
                         </div>
                         <div class="oneItem">
                             <div class="itemImg">
-                                <van-image :src="item.img"></van-image>
+                                <van-image :src="item.productIcon"></van-image>
                             </div>
                             <div class="itemdetail">
-                                <div class="name">{{item.name}}</div>
+                                <div class="name">{{item.productName}}</div>
                                 <div class="sku">
-                                        <span v-for="(item2,index2) in item.skuList">
+                                        <span v-for="(item2,index2) in item.skuDetail">
                                             {{item2.value}}
                                         </span>
                                 </div>
                                 <div class="priceAndNum">
                                     <div class="price">
-                                        <span>￥</span>{{item.price}}
+                                        <span>￥</span>{{item.productPrice*item.productNum/100}}
                                     </div>
                                     <div class="num">
-                                        <van-stepper v-model="item.num" @change="changeNum(item)" />
+                                        <van-stepper v-model="item.productNum" @change="changeNum(item)" />
 <!--                                        <van-icon name="minus" />-->
 <!--                                        {{item.num}}-->
 <!--                                        <van-icon name="plus" />-->
@@ -91,6 +91,7 @@
 <script>
     import { Toast } from 'vant';
     import { Dialog } from 'vant';
+    import {AppCartUrl} from "@/plugins/api"
     export default {
         name: "Cart",
         components: {
@@ -103,9 +104,10 @@
                 })
             },
             toManageAddress(){
-                this.$router.push({
-                    path:'/manageaddress'
-                })
+              Toast("修改地址")
+                // this.$router.push({
+                //     path:'/manageaddress'
+                // })
             },
             toggleAll() {
                 this.$refs.checkboxGroup.toggleAll(this.checked);
@@ -216,54 +218,31 @@
                 }
                 let money = 0;
                 for(let i=0;i<this.selectArr.length;i++){
-                    money += this.cartList[this.selectArr[i]].price*this.cartList[this.selectArr[i]].num;
+                    money += this.cartList[this.selectArr[i]].productPrice*this.cartList[this.selectArr[i]].productNum;
                 }
-                console.log(this.selectArr);
-                this.price = money*100;
+                // console.log(this.selectArr);
+                this.price = money;
             },
             getCartInit(){
                 this.selectArr=[];
-                axios.get(this.common.baseUrl+"/ums-shoppingcart/list?userId="+this.$store.getters.GET_USERID).then((response)=>{
-                    // console.log(response)
-                    let products = response.data.obj.products;
-                    let shoppingcarts = response.data.obj.shoppingcarts;
-                    let stocks = response.data.obj.stocks;
-                    let arr = [];
-                    for (let i=0;i<products.length;i++){
-                        let item = {
-                        }
-                        item.productId=products[i].id;
-                        item.id = shoppingcarts[i].id;
-                        item.img = this.$store.getters.GET_IMGSRC+shoppingcarts[i].img;
-                        item.img = item.img.replace(" ","");
-                        item.num = shoppingcarts[i].quantity;
-                        item.name = products[i].name;
-                        item.skuList = JSON.parse(stocks[i].skuList);
-                        item.price = stocks[i].price;
-                        arr.push(item)
-                    }
-                    this.cartList = arr;
+                this.get(this.common.baseUrl+AppCartUrl.getAllCartByUserId,{
+                  userId: this.userId
+                },response=>{
+                  for (let i=0;i<response.length;i++){
+                    response[i].skuDetail = JSON.parse(response[i].skuDetail)
+                  }
+                  this.cartList = response;
                 })
             },
             changeNum(item){
-                // console.log(item);
-                // console.log(item.id);
-                // console.log(item.num);
-                this.loading = true;
-                const formData = new FormData();
-                formData.append("id",item.id);
-                formData.append("quantity",item.num);
-                axios.post(this.common.baseUrl+"ums-shoppingcart/update",formData).then(response=>{
-                    console.log(response)
-                    if(response.data.code===200){
-                    }else{
-                        Toast("修改数量有误")
-                    }
-                    this.loading=false;
-                }).catch(error=>{
-                    console.log(error);
-                    this.loading=false;
-                })
+              this.loading = true
+              this.post(this.common.baseUrl+AppCartUrl.updateProductNumByCartId,{
+                cartId: item.id,
+                productNum: item.productNum
+              }, ()=>{
+                this.getCartInit()
+                this.loading=false;
+              })
             }
 
         },
@@ -273,6 +252,7 @@
 
                 ],
                 loading: false,
+                userId: 0,
                 address:'',
                 name:'',
                 phone:'',
@@ -310,7 +290,8 @@
         },
         created() {
             this.$store.commit("SET_ACTIVETABBAR",'cart');
-            if (this.$store.getters.GET_USERID>0){
+            this.userId = this.$store.getters.GET_USERID;
+            if (this.userId>0){
                 this.haslogin = true;
                 this.getCartInit();
             }
