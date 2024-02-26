@@ -1,7 +1,8 @@
 const appUser = '/app-user';
 const appOrder = '/app-order';
 const appCart = '/app-cart';
-
+const secKill = '/sec-kill';
+const spuValue = '/pms-spu-value';
 export const AppUserUrl= {
     checkCodeByEmail: appUser+"/checkCodeByEmail",
     getCodeByEmail: appUser+'/getCodeByEmail',
@@ -20,4 +21,11 @@ export const AppCartUrl= {
     getAllCartByUserId: appCart+"/getAllCartByUserId",
     addCart: appCart+"/addCart",
     updateProductNumByCartId: appCart+"/updateProductNumByCartId",
+}
+export const SecKillUrl={
+    getSecKillDetail: secKill+"/getSecKillDetail",
+    secKillNow: secKill+"/secKillNow",
+}
+export const SpuValueUrl={
+    getSpuValuesByProductId: spuValue+"/getSpuValuesByProductId",
 }

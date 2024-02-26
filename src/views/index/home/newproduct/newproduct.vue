@@ -2,7 +2,7 @@
     <div class="hotproduct">
         <div class="hotproduct_left">
             <div v-for="(item,index) in mydataNewLeft"
-                 class="leftone"  @click="toProductDetail(item)">
+                 class="leftone"  @click="toSecKillDetail(item)">
                 <div class="productimg">
                     <img :src="item.img" alt=""/>
                 </div>
@@ -48,11 +48,12 @@
             }
         },
         methods:{
-            toProductDetail(item){
+            toSecKillDetail(item){
+                // console.log(item)
                 this.$router.push({
-                    path:'/productdetail',
+                    path:'/secKillDetail',
                     query:{
-                        productId: item.id
+                        product: item
                     }
                 })
             },

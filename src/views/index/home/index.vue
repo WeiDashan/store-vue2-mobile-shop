@@ -41,7 +41,7 @@
                                     :mydataHotRight="mydataHotRight"
                             ></component>
                         </van-tab>
-                        <van-tab title="新品推荐">
+                        <van-tab title="秒杀专列">
                             <component
                                     :is="newproduct.component"
                                     :mydataNewLeft="mydataNewLeft"
@@ -58,6 +58,7 @@
 
 <script>
     import MescrollVue from 'mescroll.js/mescroll.vue'
+    import {SecKillUrl} from "@/plugins/api"
     const module = '/pms-product'
     export default {
         name: "Home",
@@ -137,20 +138,20 @@
                       pageSize: 6,
                   },
                   (response)=>{
-                    console.log(response)
+                    // console.log(response)
                     for (let i=0;i<response.records.length;i++){
                       if(i%2!==0){
                         response.records[i].img = this.$store.getters.GET_IMGSRC + response.records[i].img;
-                        this.mydataNewLeft.push(response.records[i]);
+                        // this.mydataNewLeft.push(response.records[i]);
                         this.mydataHotRight.push(response.records[i]);
                       }else{
                         response.records[i].img = this.$store.getters.GET_IMGSRC + response.records[i].img;
-                        this.mydataNewRight.push(response.records[i]);
+                        // this.mydataNewRight.push(response.records[i]);
                         this.mydataHotLeft.push(response.records[i]);
                       }
                     }
-                    console.log(this.mydataHotLeft);
-                    console.log(this.mydataHotRight);
+                    // console.log(this.mydataHotLeft);
+                    // console.log(this.mydataHotRight);
                     this.loading = false;
                   }
               )
@@ -238,11 +239,33 @@
                   {img: this.$store.getters.GET_IMGSRC+"O1CN01pzn0xQ1aKwf3Vt769.jpg"},
                   {img: this.$store.getters.GET_IMGSRC+"O1CN01QrjR36201sB0sLw6O.jpg"},
                 ]
+            },
+            initSecKill(){
+              this.get(this.common.baseUrl+SecKillUrl.getSecKillDetail,{},response=>{
+                for (let i=0;i<response.products.length;i++){
+                  response.products[i].img = this.$store.getters.GET_IMGSRC + response.products[i].img;
+                  response.products[i].stockId = response.stocks[i].id;
+                  response.products[i].price = response.stocks[i].price;
+                  response.products[i].skuList = response.stocks[i].skuList;
+                  response.products[i].secKillId = response.secKills[i].id;
+                  response.products[i].startTime = response.secKills[i].startTime;
+                  response.products[i].endTime = response.secKills[i].endTime;
+                  response.products[i].saleAmount = response.secKills[i].saleAmount;
+
+                  if(i%2===0){
+                    this.mydataNewLeft.push(response.products[i]);
+                  }else{
+                    this.mydataNewRight.push(response.products[i]);
+                  }
+                }
+                this.loading = false;
+              })
             }
         },
         created() {
             this.initPageData();
             this.initLunBo();
+            this.initSecKill();
         },
         // watch:{
         //     active(active){

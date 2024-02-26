@@ -126,6 +126,11 @@ const routes = [
     name: 'ProductDetail',
     component: () => import('@/views/productDetail/productDetail')
   },
+  {
+    path: '/secKillDetail',
+    name: 'SecKillDetail',
+    component: () => import('@/views/productDetail/secKillDetail')
+  },
   //--------订单---------------
   {
     path: '/paypage',

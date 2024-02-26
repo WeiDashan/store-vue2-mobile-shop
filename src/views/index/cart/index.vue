@@ -126,17 +126,17 @@
                     for (let i=0;i<this.selectArr.length;i++){
                         arr.push(this.cartList[this.selectArr[i]].id)
                     }
-                    console.log(this.cartList);
+                    // console.log(this.cartList);
                     axios.get(this.common.baseUrl+'/ums-address/default?userId='+this.$store.getters.GET_USERID).then(response=>{
-                        console.log(response);
+                        // console.log(response);
                         this.address = response.data.obj.address;
                         this.name = response.data.obj.name;
                         this.phone = response.data.obj.tel;
                         const formData = new FormData();
-                        console.log(arr);
-                        console.log(this.name);
-                        console.log(this.phone);
-                        console.log(this.address);
+                        // console.log(arr);
+                        // console.log(this.name);
+                        // console.log(this.phone);
+                        // console.log(this.address);
                         for (let i=0;i<arr.length;i++){
                             formData.append("cartIds",arr[i]);
                         }
