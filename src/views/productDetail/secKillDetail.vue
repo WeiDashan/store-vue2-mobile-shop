@@ -199,12 +199,13 @@ export default {
       Toast('点击图标');
     },
     buyNow(){
+      this.orderLoading = true
       this.post(this.common.baseUrl+SecKillUrl.secKillNow,{
         userId: this.$store.getters.GET_USERID,
         secKillId: this.product.secKillId,
         stockId: this.product.stockId
       }, ()=>{
-
+        // this.orderLoading = false
       })
     },
     createOrder(item){
