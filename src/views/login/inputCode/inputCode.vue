@@ -76,7 +76,7 @@
                     })
                 }else {
                   this.value = ""
-                  this.post(this.common.baseUrl+AppUserUrl.getCodeByEmailToLogin,{email: this.email},()=>{
+                  this.post(AppUserUrl.getCodeByEmailToLogin,{email: this.email},()=>{
                   })
                 }
             }
@@ -90,7 +90,7 @@
                             path:'/login'
                         })
                     }else{
-                      this.post(this.common.baseUrl+AppUserUrl.loginByCode,{
+                      this.post(AppUserUrl.loginByCode,{
                         email: this.email,
                         code: this.value
                       },response=>{
@@ -98,7 +98,7 @@
                         this.$store.commit("SET_USERID",response.appUser.id);
                         this.$store.commit("SET_USERINFO",response.appUser);
                         this.$store.commit("SET_TOKEN", response.token);
-                        console.log(response.token)
+                        // console.log(response.token)
                         this.$router.push({
                           path:'/mine'
                         });

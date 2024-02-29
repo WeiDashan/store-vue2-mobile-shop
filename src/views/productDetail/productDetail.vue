@@ -266,7 +266,7 @@
                 })
             }else {
                 this.productId = this.$route.query.productId;
-                this.post(this.common.baseUrl+"/pms-product/getOne",{id: this.productId}, response=>{
+                this.post("/pms-product/getOne",{id: this.productId}, response=>{
                   response.pmsProduct.img = this.$store.getters.GET_IMGSRC+response.pmsProduct.img;
                   for(let i=0;i<response.pmsSkuValue.length;i++){
                       response.pmsSkuValue[i].value = JSON.parse(response.pmsSkuValue[i].value)
@@ -427,7 +427,7 @@
               // console.log("form"+form.productIcon+form.productName)
               if (this.buyNowBtn){
                 this.orderLoading = true
-                this.post(this.common.baseUrl+AppOrderUrl.createOrder,form,()=>{
+                this.post(AppOrderUrl.createOrder,form,()=>{
                   this.orderLoading = false
                   this.$router.push({
                     path:'/orders'
@@ -435,7 +435,7 @@
                 })
                 //下单需要继续完成支付部分才能成功
               }else {
-                this.post(this.common.baseUrl+AppCartUrl.addCart,form,()=>{
+                this.post(AppCartUrl.addCart,form,()=>{
                   this.$router.push({
                     path:'/cart'
                   })

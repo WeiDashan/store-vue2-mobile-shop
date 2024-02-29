@@ -173,7 +173,7 @@ export default {
         this.product.pics[index] = this.$store.getters.GET_IMGSRC+item.trim()
       })
       this.pics = this.product.pics
-      this.get(this.common.baseUrl+SpuValueUrl.getSpuValuesByProductId,{productId: this.product.id},response=>{
+      this.get(SpuValueUrl.getSpuValuesByProductId,{productId: this.product.id},response=>{
         this.spuValues = response;
       })
     }
@@ -194,7 +194,7 @@ export default {
       Toast('点击图标');
     },
     getOrderBySecKillIdAndUserId(){
-      this.get(this.common.baseUrl+SecKillUrl.getOrderBySecKillIdAndUserId,{
+      this.get(SecKillUrl.getOrderBySecKillIdAndUserId,{
         secKillId: this.product.secKillId,
         userId: this.$store.getters.GET_USERID,
       }, response=>{
@@ -214,7 +214,7 @@ export default {
         })
       }else{
         this.orderLoading = true
-        this.post(this.common.baseUrl+SecKillUrl.secKillNow,{
+        this.post(SecKillUrl.secKillNow,{
           userId: this.$store.getters.GET_USERID,
           secKillId: this.product.secKillId,
           stockId: this.product.stockId

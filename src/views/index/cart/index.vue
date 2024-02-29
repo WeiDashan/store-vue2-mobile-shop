@@ -128,7 +128,7 @@
                       arr.push(item)
                     }
                     for (let i=0;i<arr.length;i++){
-                      this.post(this.common.baseUrl+AppCartUrl.orderByCarts,arr[i],response=>{
+                      this.post(AppCartUrl.orderByCarts,arr[i],response=>{
                         this.getCartInit()
                       })
                     }
@@ -141,7 +141,7 @@
                 Toast("请先选择商品")
               }else{
                 for (let i=0;i<this.selectArr.length;i++){
-                  this.post(this.common.baseUrl+AppCartUrl.delCartById, {
+                  this.post(AppCartUrl.delCartById, {
                     id: this.cartList[this.selectArr[i]].id
                   },response=>{
                     this.getCartInit()
@@ -167,7 +167,7 @@
             },
             getCartInit(){
                 this.selectArr=[];
-                this.get(this.common.baseUrl+AppCartUrl.getAllCartByUserId,{
+                this.get(AppCartUrl.getAllCartByUserId,{
                   userId: this.userId
                 },response=>{
                   for (let i=0;i<response.length;i++){
@@ -178,7 +178,7 @@
             },
             changeNum(item){
               this.loading = true
-              this.post(this.common.baseUrl+AppCartUrl.updateProductNumByCartId,{
+              this.post(AppCartUrl.updateProductNumByCartId,{
                 cartId: item.id,
                 productNum: item.productNum
               }, ()=>{

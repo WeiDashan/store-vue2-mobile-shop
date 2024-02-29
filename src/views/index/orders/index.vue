@@ -326,12 +326,12 @@
         },
         methods:{
             toOrderDetail(item){
-                this.$router.push({
-                    path:'/orderDetail',
-                    query:{
-                        orderId: item.id
-                    }
-                })
+                // this.$router.push({
+                //     path:'/orderDetail',
+                //     query:{
+                //         orderId: item.id
+                //     }
+                // })
             },
             toPay(item){
                 let arr=[];
@@ -353,14 +353,14 @@
                 })
             },
             buyAgain(item){
-                // console.log(item)
+                console.log(item)
                 if (item.secKillId>0){
-                  this.get(this.common.baseUrl+SecKillUrl.getSecKillById,{
+                  this.get(SecKillUrl.getSecKillById,{
                     id: item.secKillId
                   }, response1=>{
                     // console.log(response1)
                     if (response1!==null){
-                      this.get(this.common.baseUrl+SecKillUrl.getSecKillDetailById,{
+                      this.get(SecKillUrl.getSecKillDetailById,{
                         id: item.secKillId
                       }, response=>{
                         response.product.img = this.$store.getters.GET_IMGSRC + response.product.img;
@@ -390,7 +390,7 @@
                   this.$router.push({
                     path: '/productDetail',
                     query:{
-                      product: productId
+                      productId: productId
                     }
                   })
                 }
@@ -440,7 +440,7 @@
                 console.log("搜搜")
             },
           getAllOrders(){
-            this.post(this.common.baseUrl+AppOrderUrl.getAllOrdersByUserId,{userId: this.userId},response=>{
+            this.post(AppOrderUrl.getAllOrdersByUserId,{userId: this.userId},response=>{
               let arr = [];
               for (let i=0;i<response.length;i++){
                 let oneItem={
@@ -469,7 +469,7 @@
           },
           getOrdersByStatus(status){
             // -1全部, 0未付款，2待收货，4交易成功，5已取消
-            this.post(this.common.baseUrl+AppOrderUrl.getAllOrdersByUserIdAndStatus,
+            this.post(AppOrderUrl.getAllOrdersByUserIdAndStatus,
                 {userId: this.userId, orderStatus: status},response=>{
               let arr = [];
               for (let i=0;i<response.length;i++){

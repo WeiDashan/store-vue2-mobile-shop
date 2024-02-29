@@ -9,11 +9,14 @@ import store from '@/store'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
+  // 后端地址
+  baseURL: 'http://49.233.51.52:8183'
+  // baseURL: 'http://127.0.0.1:8183'
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
-  baseURL: 'http://127.0.0.1:8183'
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
-};
+}
+
 
 const _axios = axios.create(config);
 

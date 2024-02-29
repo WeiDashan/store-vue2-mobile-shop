@@ -94,7 +94,7 @@
             onSubmit() {
                 if (this.testForm()){
                     this.appUser.iconFile = this.fileList[0].file
-                    this.post(this.common.baseUrl+AppUserUrl.registerAppUser, this.appUser, ()=>{
+                    this.post(AppUserUrl.registerAppUser, this.appUser, ()=>{
                         this.fileList=[]
                         this.appUser={
                             nickyName: '',

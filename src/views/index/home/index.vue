@@ -129,7 +129,7 @@
                 // this.mescroll = mescroll  // 如果this.mescroll对象没有使用到,则mescrollInit可以不用配置
             },
             initProduct(){
-              this.get(this.common.baseUrl+this.url.list,
+              this.get(this.url.list,
                   {
                       pageNo: 0,
                       pageSize: 6,
@@ -178,7 +178,7 @@
                 ]
             },
             initSecKill(){
-              this.get(this.common.baseUrl+SecKillUrl.getSecKillDetail,{},response=>{
+              this.get(SecKillUrl.getSecKillDetail,{},response=>{
                 for (let i=0;i<response.products.length;i++){
                   response.products[i].img = this.$store.getters.GET_IMGSRC + response.products[i].img;
                   response.products[i].stockId = response.stocks[i].id;

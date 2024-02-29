@@ -100,7 +100,7 @@
                   //loginWay==0则表明是邮箱验证码登录
                     const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
                     if (reg.test(this.email)){
-                      this.post(this.common.baseUrl+AppUserUrl.getCodeByEmailToLogin,{email: this.email},()=>{
+                      this.post(AppUserUrl.getCodeByEmailToLogin,{email: this.email},()=>{
                         this.$router.push({
                           path:'/inputCode',
                           query:{
@@ -116,7 +116,7 @@
                     if (this.loginName===''||this.password===''){
                         Toast("账号密码不能为空");
                     }else{
-                      this.post(this.common.baseUrl+AppUserUrl.loginByPassword,{
+                      this.post(AppUserUrl.loginByPassword,{
                         email: this.username,
                         rawPassword: this.password
                       },response=>{
@@ -124,7 +124,7 @@
                         this.$store.commit("SET_USERID",response.appUser.id);
                         this.$store.commit("SET_USERINFO",response.appUser);
                         this.$store.commit("SET_TOKEN", response.token);
-                        console.log(response.token)
+                        // console.log(response.token)
                         this.$router.push({
                           path:'/mine'
                         });
@@ -159,9 +159,10 @@
                 })
             },
             forgetPassword(){
-                this.$router.push({
-                    path:'/forgetPassword',
-                })
+                // this.$router.push({
+                //     path:'/forgetPassword',
+                // })
+              Toast("忘记密码")
             }
 
         },

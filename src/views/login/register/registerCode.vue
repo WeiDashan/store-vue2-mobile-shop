@@ -76,7 +76,7 @@
                     })
                 }else{
                   this.value = ""
-                  this.post(this.common.baseUrl+AppUserUrl.getCodeByEmail,{email: this.email},()=>{
+                  this.post(AppUserUrl.getCodeByEmail,{email: this.email},()=>{
                   })
                 }
 
@@ -91,7 +91,7 @@
                     })
                 }else{
                     if (value.length === 6) {
-                      this.post(this.common.baseUrl+AppUserUrl.checkCodeByEmail,{
+                      this.post(AppUserUrl.checkCodeByEmail,{
                         email: this.email,
                         code: this.value
                       },()=>{

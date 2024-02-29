@@ -56,7 +56,7 @@
                 })
             }else {
                 this.loginName = this.$route.query.loginName;
-                console.log(this.loginName)
+                // console.log(this.loginName)
             }
         },
         methods:{
