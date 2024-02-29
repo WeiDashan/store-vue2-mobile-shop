@@ -120,9 +120,11 @@
                         email: this.username,
                         rawPassword: this.password
                       },response=>{
-                        response.icon = this.$store.getters.GET_IMGSRC+response.icon;
-                        this.$store.commit("SET_USERID",response.id);
-                        this.$store.commit("SET_USERINFO",response);
+                        response.appUser.icon = this.$store.getters.GET_IMGSRC+response.appUser.icon;
+                        this.$store.commit("SET_USERID",response.appUser.id);
+                        this.$store.commit("SET_USERINFO",response.appUser);
+                        this.$store.commit("SET_TOKEN", response.token);
+                        console.log(response.token)
                         this.$router.push({
                           path:'/mine'
                         });

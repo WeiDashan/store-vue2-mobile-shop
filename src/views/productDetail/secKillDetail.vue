@@ -155,7 +155,7 @@ export default {
     }
   },
   created() {
-    if (this.$route.query==={}){
+    if (this.$route.query.product.id===undefined){
       Toast("未获取到商品ID，请先选择商品，再进入该页面")
       this.$router.push({
         path:'/'
@@ -173,14 +173,9 @@ export default {
         this.product.pics[index] = this.$store.getters.GET_IMGSRC+item.trim()
       })
       this.pics = this.product.pics
-
-      // console.log(this.product)
-
       this.get(this.common.baseUrl+SpuValueUrl.getSpuValuesByProductId,{productId: this.product.id},response=>{
         this.spuValues = response;
       })
-
-
     }
   },
   methods:{
@@ -198,15 +193,38 @@ export default {
     onClickIcon() {
       Toast('点击图标');
     },
-    buyNow(){
-      this.orderLoading = true
-      this.post(this.common.baseUrl+SecKillUrl.secKillNow,{
-        userId: this.$store.getters.GET_USERID,
+    getOrderBySecKillIdAndUserId(){
+      this.get(this.common.baseUrl+SecKillUrl.getOrderBySecKillIdAndUserId,{
         secKillId: this.product.secKillId,
-        stockId: this.product.stockId
-      }, ()=>{
-        // this.orderLoading = false
+        userId: this.$store.getters.GET_USERID,
+      }, response=>{
+        // console.log(response)
+        if (response===1){
+          this.orderLoading = false
+          this.$router.push({
+            path:'/orders'
+          })
+        }
       })
+    },
+    buyNow(){
+      if (this.$store.getters.GET_USERID<0){
+        this.$router.push({
+          path:'/login'
+        })
+      }else{
+        this.orderLoading = true
+        this.post(this.common.baseUrl+SecKillUrl.secKillNow,{
+          userId: this.$store.getters.GET_USERID,
+          secKillId: this.product.secKillId,
+          stockId: this.product.stockId
+        }, ()=>{
+          setTimeout(this.getOrderBySecKillIdAndUserId, 2000)
+        })
+        setTimeout(()=>{
+          this.orderLoading = false
+        },4000)
+      }
     },
     createOrder(item){
 
@@ -216,7 +234,7 @@ export default {
     },
     define(item){
       // console.log(item)
-      if (this.$store.getters.GET_USERID<0){
+      if (this.$store.getters.GET_USERID<=0){
         this.$router.push({
           path:'/login'
         })

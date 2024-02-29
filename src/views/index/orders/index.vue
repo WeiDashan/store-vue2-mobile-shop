@@ -292,7 +292,7 @@
 
 <script>
     import MescrollVue from 'mescroll.js/mescroll.vue'
-    import {AppOrderUrl} from "@/plugins/api"
+    import {AppOrderUrl, SecKillUrl} from "@/plugins/api"
     import {Toast} from "vant";
     export default {
         name: "Orders",
@@ -319,8 +319,8 @@
                 currentPage:1,
                 currentSize:100,
                 myupdating: false,
-                userId: 105,
-                haslogin: true,
+                userId: 0,
+                haslogin: false,
                 orderNoMore: false,
             }
         },
@@ -353,47 +353,52 @@
                 })
             },
             buyAgain(item){
-                let productId = item.productId;
-                this.$router.push({
+                // console.log(item)
+                if (item.secKillId>0){
+                  this.get(this.common.baseUrl+SecKillUrl.getSecKillById,{
+                    id: item.secKillId
+                  }, response1=>{
+                    // console.log(response1)
+                    if (response1!==null){
+                      this.get(this.common.baseUrl+SecKillUrl.getSecKillDetailById,{
+                        id: item.secKillId
+                      }, response=>{
+                        response.product.img = this.$store.getters.GET_IMGSRC + response.product.img;
+                        response.product.stockId = response.stock.id;
+                        response.product.price = response.stock.price;
+                        response.product.skuList = response.stock.skuList;
+                        response.product.secKillId = response.secKill.id;
+                        response.product.startTime = response.secKill.startTime;
+                        response.product.endTime = response.secKill.endTime;
+                        response.product.saleAmount = response.secKill.saleAmount;
+                        let product = response.product
+                        this.$router.push({
+                          path: '/secKillDetail',
+                          query:{
+                            product: product
+                          }
+                        })
+                      })
+
+                    }
+                    else{
+                      Toast("秒杀已过期")
+                    }
+                  })
+                }else{
+                  let productId = item.productId;
+                  this.$router.push({
                     path: '/productDetail',
                     query:{
-                        productId: productId
+                      product: productId
                     }
-                })
+                  })
+                }
+
             },
             mescrollInit(mescroll) {
                 this.mescroll = mescroll;
             },
-            // getOrders(response){
-            //     console.log(response);
-            //     //当加载到最大时，将属性this.orderNoMore=true;
-            //     if (response.data.obj.items===[]){
-            //     }else{
-            //         if(response.data.obj.order.records.length<this.currentSize){
-            //             this.orderNoMore = true;
-            //         }
-            //         for (let i=0;i<response.data.obj.order.records.length;i++){
-            //             let oneitem={
-            //                 id: 1,
-            //                 productId: 10,
-            //                 img: 'http://139.196.126.28:9000/images/20210709160225162124248.webp',
-            //                 name: '短袖T恤男衬衣',
-            //                 payment: 9.9,
-            //                 num: 1,
-            //                 status: 1,
-            //             };
-            //             oneitem.id = response.data.obj.order.records[i].orderId;
-            //             oneitem.productId = response.data.obj.products[i].id;
-            //             oneitem.img = this.$store.getters.GET_IMGSRC + response.data.obj.products[i].img;
-            //             oneitem.name = response.data.obj.products[i].name;
-            //             oneitem.payment = response.data.obj.order.records[i].payment;
-            //             oneitem.num = response.data.obj.items[i].num;
-            //             oneitem.status = response.data.obj.order.records[i].status;
-            //             this.orders.push(oneitem);
-            //         }
-            //         this.myupdating=false;
-            //     }
-            // },
             tabsChange(){
                 this.myupdating = false;
                 this.currentPage = 1;
@@ -446,6 +451,7 @@
                   payment: 9.9,
                   num: 1,
                   status: 1,
+                  secKillId: 0,
                 };
                 oneItem.id = response[i].id;
                 oneItem.productId = response[i].productId;
@@ -454,6 +460,7 @@
                 oneItem.payment = response[i].productPrice;
                 oneItem.num = response[i].productNum;
                 oneItem.status = response[i].orderStatus;
+                oneItem.secKillId = response[i].secKillId;
                 arr.push(oneItem);
               }
               this.orders = arr;
@@ -492,8 +499,7 @@
         created() {
             this.$store.commit("SET_ACTIVETABBAR",'orders');
             this.userId = this.$store.getters.GET_USERID;
-            if (this.userId===0){
-            }else{
+            if (this.userId>0){
                 this.haslogin = true;
                 this.myupdating=true;
                 this.getAllOrders();

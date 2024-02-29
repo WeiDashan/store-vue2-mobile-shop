@@ -1,58 +1,59 @@
 <template>
     <div class="home_index">
-        <mescroll-vue class="home_index_mescroll" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
-            <div class="home">
-                <!--        搜索框-->
-                <div class="home_search">
-<!--                <div class="home_search" @click="toSearch">-->
-                    <div class="search_left">
-                        <div class="searchicon">
-                            <van-icon color="#fd3535" size="24px" name="search" />
-                        </div>
-                        <div class="searchinput">
-                            搜索商品
-                        </div>
-                    </div>
-                    <div class="search_right">
-                        <van-icon color="#fd3535" size="24px"  name="scan" />
-                    </div>
-                </div>
-                <!--        轮播图-->
-                <div class="head_swiper">
-                    <van-swipe
-                            class="my-swipe"
-                            :autoplay="3000"
-                            indicator-color="white"
-                            width="90%"
-                    >
-                        <van-swipe-item v-for="(item,index) in myimages"  :key="index">
-<!--                          @click="toProductDetail(item)"-->
-                            <van-image :src=item.img />
-                        </van-swipe-item>
-                    </van-swipe>
-                </div>
-                <!--       商品推荐 -->
-                <div class="head_product">
-                    <van-tabs v-model="active">
-                        <van-tab title="精品热卖">
-                            <component
-                                    :is="hotproduct.component"
-                                    :mydataHotLeft="mydataHotLeft"
-                                    :mydataHotRight="mydataHotRight"
-                            ></component>
-                        </van-tab>
-                        <van-tab title="秒杀专列">
-                            <component
-                                    :is="newproduct.component"
-                                    :mydataNewLeft="mydataNewLeft"
-                                    :mydataNewRight="mydataNewRight"
-                            ></component>
-                        </van-tab>
-                    </van-tabs>
-                </div>
-                <div class="footplaceholder"></div>
+<!--        <mescroll-vue class="home_index_mescroll" ref="mescroll" :up="mescrollUp" @init="mescrollInit">-->
+<!--            -->
+<!--        </mescroll-vue>-->
+      <div class="home">
+        <!--        搜索框-->
+        <div class="home_search">
+          <!--                <div class="home_search" @click="toSearch">-->
+          <div class="search_left">
+            <div class="searchicon">
+              <van-icon color="#fd3535" size="24px" name="search" />
             </div>
-        </mescroll-vue>
+            <div class="searchinput">
+              搜索商品
+            </div>
+          </div>
+          <div class="search_right">
+            <van-icon color="#fd3535" size="24px"  name="scan" />
+          </div>
+        </div>
+        <!--        轮播图-->
+        <div class="head_swiper">
+          <van-swipe
+              class="my-swipe"
+              :autoplay="3000"
+              indicator-color="white"
+              width="90%"
+          >
+            <van-swipe-item v-for="(item,index) in myimages"  :key="index">
+              <!--                          @click="toProductDetail(item)"-->
+              <van-image :src=item.img />
+            </van-swipe-item>
+          </van-swipe>
+        </div>
+        <!--       商品推荐 -->
+        <div class="head_product">
+          <van-tabs v-model="active">
+            <van-tab title="精品热卖">
+              <component
+                  :is="hotproduct.component"
+                  :mydataHotLeft="mydataHotLeft"
+                  :mydataHotRight="mydataHotRight"
+              ></component>
+            </van-tab>
+            <van-tab title="秒杀专列">
+              <component
+                  :is="newproduct.component"
+                  :mydataNewLeft="mydataNewLeft"
+                  :mydataNewRight="mydataNewRight"
+              ></component>
+            </van-tab>
+          </van-tabs>
+        </div>
+        <div class="footplaceholder"></div>
+      </div>
     </div>
 </template>
 
@@ -98,8 +99,6 @@
                pageHotNo:1,
                pageNewNo:1,
                pageNewSize:8,
-               orderNoMore: false,
-               loading: false,
            }
         },
         methods:{
@@ -125,11 +124,9 @@
                 this.mydataNewRight=[]
                 this.pageHotNo=1
                 this.pageNewNo=1
-                this.orderNoMore=false
-                this.initProduct()
             },
             mescrollInit(mescroll) {
-                this.mescroll = mescroll  // 如果this.mescroll对象没有使用到,则mescrollInit可以不用配置
+                // this.mescroll = mescroll  // 如果this.mescroll对象没有使用到,则mescrollInit可以不用配置
             },
             initProduct(){
               this.get(this.common.baseUrl+this.url.list,
@@ -138,71 +135,18 @@
                       pageSize: 6,
                   },
                   (response)=>{
-                    // console.log(response)
                     for (let i=0;i<response.records.length;i++){
                       if(i%2!==0){
                         response.records[i].img = this.$store.getters.GET_IMGSRC + response.records[i].img;
-                        // this.mydataNewLeft.push(response.records[i]);
                         this.mydataHotRight.push(response.records[i]);
                       }else{
                         response.records[i].img = this.$store.getters.GET_IMGSRC + response.records[i].img;
-                        // this.mydataNewRight.push(response.records[i]);
                         this.mydataHotLeft.push(response.records[i]);
                       }
                     }
-                    // console.log(this.mydataHotLeft);
-                    // console.log(this.mydataHotRight);
-                    this.loading = false;
                   }
               )
 
-            },
-            addHotProduct(){
-                axios.get(this.common.baseUrl+this+this.pageHotNo+"&pageSize="+this.pageHotSize)
-                    .then((response)=>{
-                        if (response.data.obj.records.length<6){
-                            this.orderNoMore=true;
-                        }
-                        for (let i=0;i<response.data.obj.records.length;i++){
-                            if(i%2===0){
-                                response.data.obj.records[i].img = this.$store.getters.GET_IMGSRC + response.data.obj.records[i].img;
-                                this.mydataHotLeft.push(response.data.obj.records[i]);
-                            }else{
-                                response.data.obj.records[i].img = this.$store.getters.GET_IMGSRC + response.data.obj.records[i].img;
-                                this.mydataHotRight.push(response.data.obj.records[i]);
-                            }
-                        }
-                        this.pageHotNo++;
-                        this.loading = false;
-                                    // console.log(this.mydataHotLeft);
-                    })
-            },
-            addNewProduct(){
-                axios.get(this.common.baseUrl+this.url.list+
-                    {
-                        pageNo: this.pageNewNo,
-                        pageSize: this.pageNewSize,
-                    })
-                    .then((response)=>{
-                        // console.log(response.data.obj.records);
-                        // if (response.data.obj.records.length<6){
-                        //     this.orderNoMore=true;
-                        // }
-                        this.orderNoMore=true;
-                        for (let i=0;i<response.data.obj.records.length;i++){
-                            if(i%2===0){
-                                response.data.obj.records[i].img = this.$store.getters.GET_IMGSRC + response.data.obj.records[i].img;
-                                this.mydataNewLeft.push(response.data.obj.records[i]);
-
-                            }else{
-                                response.data.obj.records[i].img = this.$store.getters.GET_IMGSRC + response.data.obj.records[i].img;
-                                this.mydataNewRight.push(response.data.obj.records[i]);
-                            }
-                        }
-                        // console.log(this.mydataHotLeft);
-                        this.pageNewNo++;
-                        this.loading = false;
-                    })
             },
             upCallback(page, mescroll) {
                 // if (!this.loading){
@@ -226,13 +170,6 @@
                 // }
             },
             initLunBo(){
-                // axios.get(this.common.baseUrl+"/pms-product/getLunBo").then((response)=>{
-                //     this.myimages= response.data.obj;
-                //
-                //     for (let i=0;i<this.myimages.length;i++){
-                //         this.myimages[i].img=this.$store.getters.GET_IMGSRC+this.myimages[i].img;
-                //     }
-                // })
                 this.myimages = [
                   {img: this.$store.getters.GET_IMGSRC+"O1CN01j6IfYe1imRMgpNMNM.jpg"},
                   {img: this.$store.getters.GET_IMGSRC+"O1CN01npl1rB1EcscddgzVu.jpg"},
@@ -258,26 +195,27 @@
                     this.mydataNewRight.push(response.products[i]);
                   }
                 }
-                this.loading = false;
               })
             }
         },
         created() {
+            this.$store.commit("SET_ACTIVETABBAR",'home');
             this.initPageData();
+            this.initProduct()
             this.initLunBo();
             this.initSecKill();
         },
-        // watch:{
-        //     active(active){
-        //         if (active===0){
-        //             this.initPageData();
-        //             this.addHotProduct()
-        //         }else{
-        //             this.initPageData();
-        //             this.addNewProduct();
-        //         }
-        //     }
-        // }
+        watch:{
+            active(active){
+                if (active===0){
+                    this.initPageData();
+                    this.initProduct();
+                }else{
+                    this.initPageData();
+                    this.initSecKill();
+                }
+            }
+        }
     }
 </script>
 

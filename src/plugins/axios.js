@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from "axios";
 import {Notify} from "vant";
+import store from '@/store'
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -19,6 +20,11 @@ const _axios = axios.create(config);
 _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
+    // console.log("------")
+    // console.log(store)
+    // console.log("------")
+    config.headers.token = store.getters.GET_TOKEN
+    // console.log(config)
     return config;
   },
   function(error) {

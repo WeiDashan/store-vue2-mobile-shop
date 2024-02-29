@@ -1,3 +1,5 @@
+import app from "@/App";
+
 const appUser = '/app-user';
 const appOrder = '/app-order';
 const appCart = '/app-cart';
@@ -21,10 +23,15 @@ export const AppCartUrl= {
     getAllCartByUserId: appCart+"/getAllCartByUserId",
     addCart: appCart+"/addCart",
     updateProductNumByCartId: appCart+"/updateProductNumByCartId",
+    orderByCarts: appCart+"/orderByCarts",
+    delCartById: appCart+"/delCartById",
 }
 export const SecKillUrl={
     getSecKillDetail: secKill+"/getSecKillDetail",
     secKillNow: secKill+"/secKillNow",
+    getOrderBySecKillIdAndUserId: secKill+"/getOrderBySecKillIdAndUserId",
+    getSecKillById: secKill+"/getSecKillById",
+    getSecKillDetailById: secKill+"/getSecKillDetailById",
 }
 export const SpuValueUrl={
     getSpuValuesByProductId: spuValue+"/getSpuValuesByProductId",

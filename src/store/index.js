@@ -9,14 +9,14 @@ export default new Vuex.Store({
   })],
   state: {
     activeTabbar:'home',
-    token: '',
+    token: 'abcdefg',
     menu: [],
     imgsrc: "http://49.233.51.52:9000/images/",
-    userId: 1,
+    userId: 0,
     userinfo: {
       email: "zhhzh0629@icloud.com",
       icon: "http://49.233.51.52:9000/images/20231026212808719066296.jpg",
-      nickyName: "ceshiquanxian",
+      nickyName: "登录名",
       phone: "13373367378",
     },
     defaultAddress:{

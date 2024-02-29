@@ -15,7 +15,7 @@
         </div>
         <div class="hotproduct_right">
             <div v-for="(item,index) in mydataNewRight"
-                 class="rightone" @click="toProductDetail(item)">
+                 class="rightone" @click="toSecKillDetail(item)">
                 <div class="productimg">
                     <img :src="item.img" alt=""/>
                 </div>

@@ -8,7 +8,7 @@
 
                 <van-image v-if="haslogin" :src="this.$store.getters.GET_USERINFO.icon"></van-image>
             </div>
-            <div v-if="haslogin" class="top_name">{{this.$store.getters.GET_USERINFO.nickyName}}</div>
+            <div v-if="haslogin" @click="toNotLogin" class="top_name">{{this.$store.getters.GET_USERINFO.nickyName}}</div>
             <div v-else class="top_name" @click="toLogin">登录/注册</div>
         </div>
         <div class="mine_body">
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { Dialog } from 'vant';
     export default {
         name: "Mine",
         data(){
@@ -90,6 +91,22 @@
                 // this.$router.push({
                 //     path: '/history'
                 // })
+            },
+            toNotLogin(){
+              Dialog.confirm({
+                title: '注销',
+                message: '您是否要退出登录',
+              })
+              .then(() => {
+                this.$store.commit("SET_USERID", 0)
+                this.$store.commit("SET_ACTIVETABBAR",'home');
+                this.$router.push({
+                  path:"/"
+                })
+              })
+              .catch(() => {
+                    // on cancel
+              });
             },
             toLogin(){
                 this.$router.push({

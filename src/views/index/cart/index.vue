@@ -122,91 +122,33 @@
                 if (this.selectArr.length===0){
                     Toast("请先选择商品")
                 }else{
-                    let arr = [];
+                    const arr = [];
                     for (let i=0;i<this.selectArr.length;i++){
-                        arr.push(this.cartList[this.selectArr[i]].id)
+                      const item = this.cartList[this.selectArr[i]];
+                      arr.push(item)
                     }
-                    // console.log(this.cartList);
-                    axios.get(this.common.baseUrl+'/ums-address/default?userId='+this.$store.getters.GET_USERID).then(response=>{
-                        // console.log(response);
-                        this.address = response.data.obj.address;
-                        this.name = response.data.obj.name;
-                        this.phone = response.data.obj.tel;
-                        const formData = new FormData();
-                        // console.log(arr);
-                        // console.log(this.name);
-                        // console.log(this.phone);
-                        // console.log(this.address);
-                        for (let i=0;i<arr.length;i++){
-                            formData.append("cartIds",arr[i]);
-                        }
-                        formData.append("name",this.name);
-                        formData.append("address",this.address);
-                        formData.append("phone",this.phone);
-
-                        axios.post(this.common.baseUrl+"/tb-order/payByCart",formData).then(response=>{
-                            console.log("下单结束：");
-                            console.log(response)
-                            Toast(response.data.message);
-                            if (response.data.code===200){
-                                Dialog.confirm({
-                                    title: '提示',
-                                    message: '是否要直接支付',
-                                })
-                                    .then(() => {
-                                        let pay = {
-                                            "price":0,
-                                            "orderInfo": "",
-                                            "orderIds": [],
-                                        }
-                                        pay.orderIds=response.data.obj;
-                                        pay.price = (this.price)/100;
-                                        pay.orderInfo = "订单";
-                                        this.$store.commit("SET_PAY",pay);
-                                        this.$router.push({
-                                            path:'/pay'
-                                        })
-
-                                        // 跳转至支付界面，但是需要orderId
-                                    })
-                                    .catch(() => {
-                                        //取消支付，就直接返回订单界面
-                                        this.$router.push({
-                                            path:'/orders'
-                                        })
-                                    });
-                            }
-                        })
-                    })
-                    // this.$router.push({
-                    //     path: '/paypage',
-                    //     query:{
-                    //         orders: arr
-                    //     }
-                    // })
+                    for (let i=0;i<arr.length;i++){
+                      this.post(this.common.baseUrl+AppCartUrl.orderByCarts,arr[i],response=>{
+                        this.getCartInit()
+                      })
+                    }
                     this.selectArr=[];
                 }
 
             },
             delCart(){
-                if (this.selectArr.length===0){
-                    Toast("请选择删除的商品")
-                }else{
-                    let arr = [];
-                    for (let i=0;i<this.selectArr.length;i++){
-                        arr.push(this.cartList[this.selectArr[i]].id)
-                        // console.log(typeof this.cartList[this.selectArr[i]].id)
-                    }
-                    // console.log(arr);
-                    const formData = new FormData()
-                    formData.append("ids",arr)
-                    axios.post(this.common.baseUrl+"/ums-shoppingcart/delByIds",formData).then((response)=>{
-                        // console.log(response);
-                        Toast("删除成功");
-                        this.getCartInit();
-                    })
+              if (this.selectArr.length===0){
+                Toast("请先选择商品")
+              }else{
+                for (let i=0;i<this.selectArr.length;i++){
+                  this.post(this.common.baseUrl+AppCartUrl.delCartById, {
+                    id: this.cartList[this.selectArr[i]].id
+                  },response=>{
+                    this.getCartInit()
+                  })
                 }
-
+                this.selectArr=[];
+              }
             },
             checkboxchange(item){
                 // console.log(item)

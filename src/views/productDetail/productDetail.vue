@@ -459,7 +459,7 @@
             },
             define(item){
                 // console.log(item)
-                if (this.$store.getters.GET_USERID<0){
+                if (this.$store.getters.GET_USERID<=0){
                     this.$router.push({
                         path:'/login'
                     })
